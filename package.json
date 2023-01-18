@@ -1,0 +1,23 @@
+{
+  "name": "project-4",
+  "version": "1.0.0",
+  "description": "",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "build": "cd client && npm run build",
+    "start": "cd server && npm run start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.29.4",
+    "planby": "^1.1.2",
+    "react-modal": "^3.16.1",
+    "semantic-ui-css": "^2.5.0",
+    "semantic-ui-react": "^2.1.4"
+  }
+}
