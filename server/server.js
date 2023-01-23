@@ -6,10 +6,10 @@ const morgan = require("morgan");
 const path = require("path");
 const session = require("express-session");
 const userController = require("../server/controller/controller/userController");
-const airportController = require("../server/controller/controller/airportController");
 const sessionController = require("../server/controller/controller/sessionController");
 const flightController = require("../server/controller/controller/flightController");
 const airlineController = require("../server/controller/controller/airlineController");
+const restrictionController = require("../server/controller/controller/restrictionController");
 
 //! CONFIGURATION AND CONNECTION
 const app = express();
@@ -39,10 +39,10 @@ app.use(
 
 //! ROUTES
 app.use("/api/user", userController);
-app.use("/api/airport", airportController);
 app.use("/api/session", sessionController);
 app.use("/api/flight", flightController);
 app.use("/api/airline", airlineController);
+app.use("/api/restriction", restrictionController);
 
 //! TESTING
 app.get("/api/", (req, res) => {

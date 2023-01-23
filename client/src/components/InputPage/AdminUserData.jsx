@@ -55,31 +55,41 @@ const AdminUserData = () => {
   };
 
   return (
-    <>
-      <h1>Users</h1>
-      <table>
-        <thead>
+    <div class="m-3">
+      <h1 class="text-left underline mb-2 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+        USERS
+      </h1>
+      <table class="w-1/2 text-sm text-center text-gray-500 border">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
           <tr>
-            <th>Name</th>
-            <th>Callsign</th>
-            <th>Username</th>
+            <th scope="col" class="px-6 py-3">
+              Name
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Callsign
+            </th>
+            <th scope="col" class="px-6 py-3">
+              Username
+            </th>
           </tr>
         </thead>
         <tbody>
           {user.map((user) => (
-            <tr key={user._id}>
-              <td>{user.name}</td>
+            <tr key={user._id} class="bg-white border-b">
+              <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                {user.name}
+              </td>
               <td>{user.callsign}</td>
               <td>{user.username}</td>
-              <td id="lastcolumn">
+              <td>
                 <button
-                  className="tablebtn"
+                  class="m-1 w-auto text-white bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                   onClick={() => updateUser(user._id)}
                 >
                   Edit
                 </button>
                 <button
-                  className="tablebtn"
+                  class="m-1 w-auto text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                   onClick={() => handleDelete(user._id)}
                 >
                   Delete
@@ -96,18 +106,36 @@ const AdminUserData = () => {
         ariaHideApp={false}
         onRequestClose={() => setUserModalIsOpen(false)}
       >
-        <h2>Update User Profile</h2>
-        <form onSubmit={editUser}>
-          Name:
-          <input name="name" defaultValue={selectedUser.name}></input>
-          Callsign:
-          <input name="callsign" defaultValue={selectedUser.callsign}></input>
-          Username:
-          <input name="username" defaultValue={selectedUser.username}></input>
-          <button>Update</button>
-        </form>
+        <div class="w-fit rounded-3xl border-2 p-2 bg-gray-500 m-auto mt-10 p-4">
+          <h2 class="mb-4 text-xl font-medium text-gray-900">
+            UPDATE USER PROFILE
+          </h2>
+          <form onSubmit={editUser}>
+            Name:
+            <input
+              name="name"
+              defaultValue={selectedUser.name}
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            ></input>
+            Callsign:
+            <input
+              name="callsign"
+              defaultValue={selectedUser.callsign}
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            ></input>
+            Username:
+            <input
+              name="username"
+              defaultValue={selectedUser.username}
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            ></input>
+            <button class="mt-2 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+              Update
+            </button>
+          </form>
+        </div>
       </ReactModal>
-    </>
+    </div>
   );
 };
 

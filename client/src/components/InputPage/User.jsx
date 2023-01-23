@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import ReactModal from "react-modal";
+import FlyTime from "./FlyTime";
 
 const User = () => {
   const navigate = useNavigate();
@@ -10,7 +11,6 @@ const User = () => {
   const [airline, setAirline] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [selectedFlight, setSelectedFlight] = useState({});
-  const [sortedField, setSortedField] = useState("");
 
   const OutputPage = () => {
     navigate("/output");
@@ -25,17 +25,23 @@ const User = () => {
   flight.sort((a, b) => {
     const nameA = a.airline.toUpperCase(); // ignore upper and lowercase
     const nameB = b.airline.toUpperCase(); // ignore upper and lowercase
+    const etdA = a.etd;
+    const etdB = b.etd;
     if (nameA < nameB) {
       return -1;
     }
     if (nameA > nameB) {
       return 1;
     }
-    // names must be equal
-    return 0;
+    if (nameA === nameB && etdA < etdB) {
+      return -1;
+    }
+    if (nameA === nameB && etdA > etdB) {
+      return 1;
+    } else {
+      return 0;
+    }
   });
-
-  console.log(flight);
 
   useEffect(() => {
     fetch(`/api/airline`)
@@ -103,107 +109,157 @@ const User = () => {
     setFlight(data);
   };
 
-  console.log(sortedField);
-
   return (
-    <>
-      <div>
-        <button onClick={OutputPage}>Output</button>
-        <button> {user.callsign}</button>
+    <div class="relative overflow-x-auto">
+      <div class="m-2">
+        <button
+          onClick={OutputPage}
+          class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+        >
+          OUTPUT
+        </button>
       </div>
+      <div class="flex flex-row">
+        <div>
+          <FlyTime />
+        </div>
 
-      <div>
-        <fieldset id="fieldset2">
+        <div class="relative overflow-x-auto">
           <form onSubmit={addFlight}>
-            <label className="inputpagelabel">AIRLINE:</label>
-            <select className="inputpagebox" name="airline">
-              {airline.map((airline) => (
-                <option key={airline.name}>{airline.name}</option>
-              ))}
-            </select>
-            <label className="inputpagelabel">C/S:</label>
-            <input
-              className="inputpagebox"
-              name="callsign"
-              defaultValue="ALPHA"
-            ></input>
-            <label className="inputpagelabel">PAX:</label>
-            <select className="inputpagebox" name="pax">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-            </select>
-            <label className="inputpagelabel">ETD:</label>
-            <input
-              className="inputpagebox"
-              type="time"
-              name="etd"
-              min="06:00"
-              defaultValue="08:00"
-            ></input>
-            <label className="inputpagelabel">ETA:</label>
-            <input
-              className="inputpagebox"
-              type="time"
-              name="eta"
-              defaultValue="10:00"
-            ></input>
-            <label className="inputpagelabel">LOCATION:</label>
-            <input
-              className="inputpagebox"
-              defaultValue="SCS"
-              name="location"
-            ></input>
-            <label className="inputpagelabel">FLIGHT TYPE:</label>
-            <select className="inputpagebox" name="type">
-              <option value="TRG">TRG</option>
-              <option value="OPS">OPS</option>
-            </select>
-            <button className="inputpagebutton">+</button>
+            <div class="border w-96 inline-block items-left justify-center px-2 py-8 ml-2 mb-2">
+              <h1 class="text-center underline ml-2 mb-2 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
+                FLIGHT
+              </h1>
+              <label class="block mt-2 mb-2 text-sm font-medium text-gray-900">
+                AIRLINE:
+              </label>
+              <select
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 0"
+                name="airline"
+              >
+                {airline.map((airline) => (
+                  <option key={airline.name}>{airline.name}</option>
+                ))}
+              </select>
+              <label class="block mt-2 mb-2 text-sm font-medium text-gray-900">
+                C/S:
+              </label>
+              <input
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                name="callsign"
+                defaultValue="ALPHA"
+              ></input>
+              <label class="block mt-2 mb-2 text-sm font-medium text-gray-900">
+                PAX:
+              </label>
+              <select
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                name="pax"
+              >
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+              </select>
+              <label class="block mt-2 mb-2 text-sm font-medium text-gray-900">
+                ETD:
+              </label>
+              <input
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                type="time"
+                name="etd"
+                min="06:00"
+                defaultValue="08:00"
+              ></input>
+              <label class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">
+                ETA:
+              </label>
+              <input
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                type="time"
+                name="eta"
+                defaultValue="10:00"
+              ></input>
+              <label class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">
+                LOCATION:
+              </label>
+              <input
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                defaultValue="SCS"
+                name="location"
+              ></input>
+              <label class="block mt-2 mb-2 text-sm font-medium text-gray-900 ">
+                FLIGHT TYPE:
+              </label>
+              <select
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                name="type"
+              >
+                <option value="TRG">TRG</option>
+                <option value="OPS">OPS</option>
+              </select>
+              <button class="mt-2 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                ADD FLIGHT
+              </button>
+            </div>
           </form>
-        </fieldset>
+        </div>
       </div>
 
-      <table id="restable">
-        <thead>
+      <table class="m-2 w-full text-sm text-center text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-300">
           <tr>
-            <th>AIRLINE</th>
-            <th>C/S</th>
-            <th>PAX</th>
-            <th>
-              <button onClick={() => setSortedField("etd")}>ETD</button>
+            <th scope="col" class="px-6 py-3">
+              AIRLINE
             </th>
-            <th>
-              <button onClick={() => setSortedField("eta")}>ETA</button>
+            <th scope="col" class="px-6 py-3">
+              C/S
             </th>
-            <th>LOCATION</th>
-            <th>FLIGHT TYPE</th>
+            <th scope="col" class="px-6 py-3">
+              PAX
+            </th>
+            <th scope="col" class="px-6 py-3">
+              ETD
+            </th>
+            <th scope="col" class="px-6 py-3">
+              ETA
+            </th>
+            <th scope="col" class="px-6 py-3">
+              LOCATION
+            </th>
+            <th scope="col" class="px-6 py-3">
+              FLIGHT TYPE
+            </th>
           </tr>
         </thead>
         <tbody>
           {flight.map((flight) => (
-            <tr key={flight._id}>
-              <td>{flight.airline}</td>
-              <td>{flight.callsign}</td>
-              <td>{flight.pax}</td>
-              <td>{flight.etd}</td>
-              <td>{flight.eta}</td>
-              <td>{flight.location}</td>
-              <td>{flight.type}</td>
-              <td id="lastcolumn">
+            <tr key={flight._id} class="bg-white border-b">
+              <td id={"x" + flight.airline}>{flight.airline}</td>
+              <td
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+              >
+                {flight.callsign}
+              </td>
+              <td class="px-6 py-4">{flight.pax}</td>
+              <td class="px-6 py-4">{flight.etd}</td>
+              <td class="px-6 py-4">{flight.eta}</td>
+              <td class="px-6 py-4">{flight.location}</td>
+              <td class="px-6 py-4">{flight.type}</td>
+              <td>
                 <button
-                  className="tablebtn"
+                  class="m-1 w-auto text-white bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                   onClick={() => updateFlight(flight._id)}
                 >
                   Edit
                 </button>
                 <button
-                  className="tablebtn"
+                  class="m-1 w-auto text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                   onClick={() => handleDelete(flight._id)}
                 >
                   Delete
@@ -220,60 +276,95 @@ const User = () => {
         ariaHideApp={false}
         onRequestClose={() => setModalIsOpen(false)}
       >
-        <h2>Update Flight</h2>
-        <form onSubmit={editFlight}>
-          Airline:
-          <select name="airline">
-            <option selected disabled hidden>
-              {selectedFlight.airline}
-            </option>
-            {airline.map((airline) => (
-              <option>{airline.name}</option>
-            ))}
-          </select>
-          <br />
-          C/S:
-          <input name="callsign" defaultValue={selectedFlight.callsign}></input>
-          <br />
-          Pax:
-          <input
-            type="number"
-            name="pax"
-            min="1"
-            max="8"
-            defaultValue={selectedFlight.pax}
-          ></input>
-          <br />
-          ETD:
-          <input
-            name="etd"
-            type="time"
-            defaultValue={selectedFlight.etd}
-          ></input>
-          <br />
-          ETA:
-          <input
-            name="eta"
-            type="time"
-            defaultValue={selectedFlight.eta}
-          ></input>
-          <br />
-          Location:
-          <input name="location" defaultValue={selectedFlight.location}></input>
-          <br />
-          Type:
-          <select name="type">
-            <option selected disabled hidden>
-              {selectedFlight.type}
-            </option>
-            <option value="TRG">TRG</option>
-            <option value="OPS">OPS</option>
-          </select>
-          <br />
-          <button>Update</button>
-        </form>
+        <div class="w-fit rounded-3xl border-2 p-2 bg-gray-500 m-auto mt-10 p-4">
+          <h2 class="mb-4 text-xl font-medium text-gray-900">UPDATE FLIGHT</h2>
+          <form onSubmit={editFlight}>
+            <label class="mb-2 text-sm font-medium text-gray-900">
+              AIRLINE :
+            </label>
+            <select
+              name="airline"
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            >
+              <option selected disabled hidden>
+                {selectedFlight.airline}
+              </option>
+              {airline.map((airline) => (
+                <option>{airline.name}</option>
+              ))}
+            </select>
+            <br />
+            <label class="inline mb-2 text-sm font-medium text-gray-900">
+              C/S :
+            </label>
+            <input
+              name="callsign"
+              defaultValue={selectedFlight.callsign}
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            ></input>
+            <br />
+            <label class="inline mb-2 text-sm font-medium text-gray-900">
+              PAX :
+            </label>
+            <input
+              type="number"
+              name="pax"
+              min="1"
+              max="8"
+              defaultValue={selectedFlight.pax}
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            ></input>
+            <br />
+            <label class="inline mb-2 text-sm font-medium text-gray-900">
+              ETD :
+            </label>
+            <input
+              name="etd"
+              type="time"
+              defaultValue={selectedFlight.etd}
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            ></input>
+            <br />
+            <label class="inline mb-2 text-sm font-medium text-gray-900">
+              ETA :
+            </label>
+            <input
+              name="eta"
+              type="time"
+              defaultValue={selectedFlight.eta}
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            ></input>
+            <br />
+            <label class="inline mb-2 text-sm font-medium text-gray-900">
+              LOCATION :
+            </label>
+            <input
+              name="location"
+              defaultValue={selectedFlight.location}
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            ></input>
+            <br />
+            <label class="inline mb-2 text-sm font-medium text-gray-900">
+              TYPE :
+            </label>
+            <select
+              name="type"
+              class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 w-full p-2"
+            >
+              <option selected disabled hidden>
+                {selectedFlight.type}
+              </option>
+              <option value="TRG">TRG</option>
+              <option value="OPS">OPS</option>
+            </select>
+            <br />
+            <button class="mt-2 w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+              UPDATE
+            </button>
+          </form>
+        </div>
       </ReactModal>
-    </>
+    </div>
   );
 };
 
