@@ -86,7 +86,6 @@ const Output = () => {
     let endresults = endhours + endmins;
 
     let reswidthResult = Math.abs(startresults - endresults);
-    console.log(reswidthResult);
     return reswidthResult;
   };
 
@@ -107,17 +106,49 @@ const Output = () => {
       {restriction.map((restriction) => (
         <div key={restriction._id}>
           <div
-            class="absolute border bg-gray-200 h-1605 opacity-50 mt-4 -z-50"
+            class="absolute border bg-cyan-200 h-1605 opacity-50 mt-4 -z-50 text-[7px]"
             style={{
               width: reswidth(restriction["start"], restriction["end"]),
               marginLeft: resMarginleft(restriction["start"]),
+              backgroundColor:
+                restriction.name === "WCTC"
+                  ? "cyan"
+                  : restriction.name === "PD"
+                  ? "rebeccapurple"
+                  : restriction.name === "AERO"
+                  ? "palevioletred"
+                  : restriction.name === "GND"
+                  ? "forestgreen"
+                  : restriction.name === "EXAM"
+                  ? "red"
+                  : restriction.name === "CCTFRZ"
+                  ? "gray"
+                  : null,
+              height:
+                restriction.name === "WCTC"
+                  ? 1605
+                  : restriction.name === "CCTFRZ"
+                  ? 1605
+                  : 10,
+              marginTop:
+                restriction.name === "PD"
+                  ? 65
+                  : restriction.name === "AERO"
+                  ? 55
+                  : restriction.name === "GND"
+                  ? 45
+                  : restriction.name === "EXAM"
+                  ? 35
+                  : restriction.name === "CCTFRZ"
+                  ? 25
+                  : null,
             }}
           >
             {restriction.start}-{restriction.end}
           </div>
         </div>
       ))}
-      <table class="w-1800 text-sm text-gray-500 ml-100 border fixed">
+      <table class="w-1800 text-sm text-gray-500 ml-100 border absolute">
         <thead class="w-1800 text-xs text-gray-700 align-text-top h-20 border ">
           <tr>
             <th class="border">0600H</th>
@@ -144,11 +175,11 @@ const Output = () => {
 
       <div class="pt-20">
         {airlineArray.map((flight) => (
-          <div class="flex" key={flight[0]}>
-            <div class="border w-100 text-center font-medium text-gray-900">
+          <div class="flex w-1900" key={flight[0]}>
+            <div class="border text-center font-medium text-gray-900 grow w-100">
               {flight[0]}
             </div>
-            <div class="text-center">
+            <div class="text-center border-b border-black w-1800 grow">
               {flight[1].map((element) => (
                 <div
                   class="border-solid border-2 border-black mt-1 mb-1"

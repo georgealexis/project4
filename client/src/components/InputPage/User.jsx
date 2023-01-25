@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import ReactModal from "react-modal";
-import FlyTime from "./FlyTime";
+import Restriction from "./Restriction";
 
 const User = () => {
   const navigate = useNavigate();
@@ -23,8 +23,8 @@ const User = () => {
   }, []);
 
   flight.sort((a, b) => {
-    const nameA = a.airline.toUpperCase(); // ignore upper and lowercase
-    const nameB = b.airline.toUpperCase(); // ignore upper and lowercase
+    const nameA = a.airline.toUpperCase();
+    const nameB = b.airline.toUpperCase();
     const etdA = a.etd;
     const etdB = b.etd;
     if (nameA < nameB) {
@@ -119,9 +119,9 @@ const User = () => {
           OUTPUT
         </button>
       </div>
-      <div class="flex flex-row">
+      <div class="flex">
         <div>
-          <FlyTime />
+          <Restriction />
         </div>
 
         <div class="relative overflow-x-auto">
@@ -141,14 +141,46 @@ const User = () => {
                   <option key={airline.name}>{airline.name}</option>
                 ))}
               </select>
-              <label class="block mt-2 mb-2 text-sm font-medium text-gray-900">
+              <label
+                for="callsign"
+                class="block mt-2 mb-2 text-sm font-medium text-gray-900"
+              >
                 C/S:
               </label>
               <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                list="callsigns"
+                id="callsign"
                 name="callsign"
-                defaultValue="ALPHA"
-              ></input>
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+              />
+              <datalist id="callsigns">
+                <option value="ALPHA"></option>
+                <option value="BRAVO"></option>
+                <option value="CHARLIE"></option>
+                <option value="DELTA"></option>
+                <option value="ECHO"></option>
+                <option value="FOXTROT"></option>
+                <option value="GOLF"></option>
+                <option value="HOTEL"></option>
+                <option value="INDIGO"></option>
+                <option value="JULIET"></option>
+                <option value="KILO"></option>
+                <option value="LIMA"></option>
+                <option value="MIKE"></option>
+                <option value="NOVEMBER"></option>
+                <option value="OSCAR"></option>
+                <option value="PAPA"></option>
+                <option value="QUEBEC"></option>
+                <option value="ROMEO"></option>
+                <option value="SIERRA"></option>
+                <option value="TANGO"></option>
+                <option value="UNIFORM"></option>
+                <option value="VICTOR"></option>
+                <option value="WHISKEY"></option>
+                <option value="XRAY"></option>
+                <option value="YANKEE"></option>
+                <option value="ZULU"></option>
+              </datalist>
               <label class="block mt-2 mb-2 text-sm font-medium text-gray-900">
                 PAX:
               </label>
@@ -210,7 +242,7 @@ const User = () => {
         </div>
       </div>
 
-      <table class="m-2 w-full text-sm text-center text-gray-500">
+      <table class="m-2 w-full text-sm text-center text-gray-500 bg-gray-300">
         <thead class="text-xs text-gray-700 uppercase bg-gray-300">
           <tr>
             <th scope="col" class="px-6 py-3">
@@ -238,8 +270,30 @@ const User = () => {
         </thead>
         <tbody>
           {flight.map((flight) => (
-            <tr key={flight._id} class="bg-white border-b">
-              <td id={"x" + flight.airline}>{flight.airline}</td>
+            <tr key={flight._id} class="bg-gray-100 border-b">
+              <td
+                class="text-gray-900 text-2xl font-bold bg-gray-600"
+                style={{
+                  color:
+                    flight.airline === "111"
+                      ? "red"
+                      : flight.airline === "140"
+                      ? "orange"
+                      : flight.airline === "143"
+                      ? "yellow"
+                      : flight.airline === "145"
+                      ? "mediumseagreen"
+                      : flight.airline === "116"
+                      ? "dodgerblue"
+                      : flight.airline === "119"
+                      ? "fuchsia"
+                      : flight.airline === "UTS"
+                      ? "pink"
+                      : null,
+                }}
+              >
+                {flight.airline}
+              </td>
               <td
                 scope="row"
                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"

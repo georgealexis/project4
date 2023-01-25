@@ -6,6 +6,7 @@ module.exports = {
       width: {
         1800: "1800px",
         100: "100px",
+        1900: "1900px",
       },
       margin: {
         100: "100px",
