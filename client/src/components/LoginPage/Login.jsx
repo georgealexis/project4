@@ -75,7 +75,7 @@ const Login = ({ setUserIs, setLoggedInAs }) => {
                 <p class="text-sm font-light text-gray-500">
                   Need An Account ?
                   <span
-                    class="font-medium text-blue-600 hover:underline pl-1"
+                    class="font-medium text-blue-600 hover:underline pl-1 cursor-pointer"
                     onClick={registrationPage}
                   >
                     Register

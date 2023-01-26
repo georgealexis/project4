@@ -106,7 +106,7 @@ const Output = () => {
       {restriction.map((restriction) => (
         <div key={restriction._id}>
           <div
-            class="absolute border bg-cyan-200 h-1605 opacity-50 mt-4 -z-50 text-[7px]"
+            class="absolute border bg-cyan-200 h-1605 opacity-90 mt-4 text-[7px]"
             style={{
               width: reswidth(restriction["start"], restriction["end"]),
               marginLeft: resMarginleft(restriction["start"]),
@@ -132,15 +132,29 @@ const Output = () => {
                   : 10,
               marginTop:
                 restriction.name === "PD"
-                  ? 65
-                  : restriction.name === "AERO"
                   ? 55
-                  : restriction.name === "GND"
+                  : restriction.name === "AERO"
                   ? 45
-                  : restriction.name === "EXAM"
+                  : restriction.name === "GND"
                   ? 35
-                  : restriction.name === "CCTFRZ"
+                  : restriction.name === "EXAM"
                   ? 25
+                  : restriction.name === "CCTFRZ"
+                  ? 65
+                  : null,
+              zIndex:
+                restriction.name === "WCTC"
+                  ? -5
+                  : restriction.name === "PD"
+                  ? -4
+                  : restriction.name === "AERO"
+                  ? -4
+                  : restriction.name === "GND"
+                  ? -4
+                  : restriction.name === "EXAM"
+                  ? -4
+                  : restriction.name === "CCTFRZ"
+                  ? -4
                   : null,
             }}
           >
@@ -176,7 +190,27 @@ const Output = () => {
       <div class="pt-20">
         {airlineArray.map((flight) => (
           <div class="flex w-1900" key={flight[0]}>
-            <div class="border text-center font-medium text-gray-900 grow w-100">
+            <div
+              class="border text-center font-2xl font-bold text-gray-900 grow w-100 bg-gray-900"
+              style={{
+                color:
+                  flight[0] === "111"
+                    ? "red"
+                    : flight[0] === "140"
+                    ? "orange"
+                    : flight[0] === "143"
+                    ? "yellow"
+                    : flight[0] === "145"
+                    ? "mediumseagreen"
+                    : flight[0] === "116"
+                    ? "dodgerblue"
+                    : flight[0] === "119"
+                    ? "fuchsia"
+                    : flight[0] === "UTS"
+                    ? "pink"
+                    : null,
+              }}
+            >
               {flight[0]}
             </div>
             <div class="text-center border-b border-black w-1800 grow">

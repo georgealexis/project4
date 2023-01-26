@@ -16,7 +16,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/login"
+            path="/"
             element={
               <Login setUserIs={setUserIs} setLoggedInAs={setLoggedInAs} />
             }
